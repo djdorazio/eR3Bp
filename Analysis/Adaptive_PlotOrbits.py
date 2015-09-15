@@ -16,24 +16,44 @@ Nstp = int(sys.argv[2])
 #fname = "../dat/" + fname1
 fname = "../EllR3B/" + fname1
   
-Vprof = genfromtxt(fname, usecols=[0])[0]    #1 = Kep plus bin quadrapole (MM08), 2 = r*sqrt(Om1 + Om2), 3 = Kep round each hole trans to Kep aroudn binary with vr and vphi comp
+
 Panel = 1    #1 Plot individual panels, 2 plot both begin and end together 3 plot all ouputs for movie
-PlotICs = True
+PlotICs = False
 PlotCJ = False
 stf = True
 
 
+OLDin = 1
 
-
-Colors = 0   #0 is old style red blue black green, 1 is red in blue out and inner part split between orange and green
+Colors = 2   #0 is old style red blue black green, 1 is red in blue out and inner part split between orange and green 
+#2 is all black
 
 ###Load in t and x,y positions
-q       =  genfromtxt(fname, usecols=[0])[1] 
-ecc     =  genfromtxt(fname, usecols=[0])[2] 
-np      = int( genfromtxt(fname, usecols=[0])[3] )
-DskSz   =  genfromtxt(fname, usecols=[0])[4]
-NP      = int(np*np)
-BAD     = int( genfromtxt(fname, usecols=[0])[NP+Nstp] )
+if (OLDin==1):
+	Vprof   = 4
+	q       =  genfromtxt(fname, usecols=[0])[0] 
+	ecc 	= 0.0
+	np      = int( genfromtxt(fname, usecols=[0])[1] )
+	DskSz   =  2.5
+	NP      = int(np*np)
+	BAD     = int( genfromtxt(fname, usecols=[0])[NP+Nstp] )
+	tt    = genfromtxt(fname, usecols=[0], skip_header=2, skip_footer=1)
+	xx    = genfromtxt(fname, usecols=[1], skip_header=2, skip_footer=1)
+	yy    = genfromtxt(fname, usecols=[2], skip_header=2, skip_footer=1)
+	CCJ   = genfromtxt(fname, usecols=[3], skip_header=2, skip_footer=1)
+else:
+	Vprof = genfromtxt(fname, usecols=[0])[0]    #1 = Kep plus bin quadrapole (MM08), 2 = r*sqrt(Om1 + Om2), 3 = Kep round each hole trans to Kep aroudn binary with vr and vphi comp
+	q       =  genfromtxt(fname, usecols=[0])[1] 
+	ecc     =  genfromtxt(fname, usecols=[0])[2] 
+	np      = int( genfromtxt(fname, usecols=[0])[3] )
+	DskSz   =  genfromtxt(fname, usecols=[0])[4]
+	NP      = int(np*np)
+	BAD     = int( genfromtxt(fname, usecols=[0])[NP+Nstp] )
+
+	tt    = genfromtxt(fname, usecols=[0], skip_header=5, skip_footer=1)
+	xx    = genfromtxt(fname, usecols=[1], skip_header=5, skip_footer=1)
+	yy    = genfromtxt(fname, usecols=[2], skip_header=5, skip_footer=1)
+	CCJ   = genfromtxt(fname, usecols=[3], skip_header=5, skip_footer=1)
 
 
 
@@ -50,10 +70,7 @@ xbh2 = u1
 ybh2 = 0.0
 
 
-tt    = genfromtxt(fname, usecols=[0], skip_header=5, skip_footer=1)
-xx    = genfromtxt(fname, usecols=[1], skip_header=5, skip_footer=1)
-yy    = genfromtxt(fname, usecols=[2], skip_header=5, skip_footer=1)
-CCJ   = genfromtxt(fname, usecols=[3], skip_header=5, skip_footer=1)
+
 
 
 
@@ -329,6 +346,9 @@ if (ecc!=0.0):
 			yL4[i]  = sqrt(1./(1.+ecc*cos(ff[i]))**(4./3.) - 0.25)
 		yL5  = -yL4 
 else:
+	xL45 = ones(Nstp)*0.5
+	yL5 = ones(Nstp)*sqrt(3.)/2.
+	yL4 = -yL5
 	if (Colors==0):
 		for i in range(0,NP):
 			if (rr[0][i] < xL2 and TUmV2[i] > CJcrit):
@@ -350,8 +370,10 @@ else:
 				greens.append(i)
 			if (rr[0][i] > xL2 and TUmV2[i] < CJcrit):
 				oranges.append(i)
-
-		
+	if (Colors==2):
+		for i in range(0,NP):
+			blacks.append(i)
+			
 		
 ##INTERPOLATE SCATTER POINTS TO CONTOUR PLOT
 
@@ -496,9 +518,12 @@ if (Panel == 1):
 
 
 	
-	plt.xlim(-(DskSz+2.),DskSz+2.)
-	plt.ylim(-(DskSz+2.),DskSz+2.)
+	#plt.xlim(-(DskSz+2.),DskSz+2.)
+	#plt.ylim(-(DskSz+2.),DskSz+2.)
 	
+	plt.xlim(-2.5, 2.5)
+	plt.ylim(-2.5, 2.5)
+
 	plt.xlabel("$x/a$")
 	plt.ylabel("$y/a$")
 
@@ -508,7 +533,7 @@ if (Panel == 1):
 	if (stf):	
 		#savefig("....//Rings_vs_Cavitys/figures/CJRES_q%g_Om_Np1e4_%inorb_500perorb.png" %(q,norbfmt1))
 		#savefig("PLOTS/q%g_Om_Np1e4_%inorb__Rk5AdptStep.png" %(q,norbfmt1))
-		plt.savefig("../EccPlots/q%g_ecc%g_norb%g_Vprof%g_Np1e4_Rk5AdptStep.png" %(q,ecc,norbfmt1,Vprof))
+		plt.savefig("../EccPlots/q%g_ecc%g_norb%g_Vprof%g_Np4e4_r4_Rk5AdptStep_Zoom.png" %(q,ecc,norbfmt1,Vprof))
 	else:
 		plt.show() 
 	plt.close("all")
