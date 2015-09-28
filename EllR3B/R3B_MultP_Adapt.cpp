@@ -19,18 +19,20 @@
 int main(){
 	// Choose Velocity Profile
 	Int Vprof = 5; // 1 = Om, 2 = AddV, 3= Under Constr (to be consistent AddV with vr and vphi)
-	Int RandSeed = 1; //randomly seed ICs in a disk or annulus if 1, else uniform suqare grid
+	Int RandSeed = 1; //randomly seed ICs in a disk or annulus if 1, else uniform square grid
 	cout << Vprof << endl;
-	const Int NUM_P=100;
-	double DskSze = 1.2;
-	double DskMin = 0.8;
+	const Int NUM_P=8;
+	double DskSze = 2.0;
+	double DskMin = 0.0;
 	
-	
+	const Int Norb = 64;
 	const Int nvar=6;  // x, y, z, vx, vy, vz
-	const Int nout=1; //number of outputs if NUM_P=1 else output ICs and final step reset nout below
+	const Int nout=64*Norb; //number of outputs if NUM_P=1 else output ICs and final step reset nout below
 	
-	const Doub q = 0.02;
-	const Doub ecc = 0.3;
+
+	const Doub q = 0.0001;   //mass ratio
+	const Doub ecc = 0.0;  //eccentricity
+	const Doub nu  = 0.0;   // coef of kin visc
 	
 	//unstable q
 	//>0.040064205
@@ -60,7 +62,7 @@ int main(){
 		Output ouut(nout);  // output nout steps
 		
 		//rhs_R3B d(q);
-		rhs_EllR3B d(q, ecc);
+		rhs_EllR3B d(q, ecc, nu);
 		//rhs_VdP d(1.0e-3);
 		
 		//Odeint<StepperDopr5<rhs_R3B> > ode(ystart, x1, x2, atol, rtol, h1, hmin, ouut, d);
@@ -73,6 +75,8 @@ int main(){
 		cout << q << endl;
 		cout << ecc << endl;
 		cout << NUM_P << endl;
+		cout << DskSze << endl;
+		cout << nout << endl;
 		for (Int i=0;i<ouut.count;i++){
 			cout.precision(20);
 			cout << ouut.xsave[i] << " " << ouut.ysave[0][i] << " " << ouut.ysave[1][i] <<endl;
@@ -114,6 +118,7 @@ int main(){
 		cout << ecc << endl;
 		cout << NUM_P << endl;
 		cout << DskSze << endl;
+		cout << nout << endl;
 	//	double nc=10.; //for cored profiles
 		//double Mach = 20.;
 		//double OM1;
@@ -285,9 +290,9 @@ int main(){
 				//	rhs_R3B d(q);  // Give accelerations
 				//}else{
 				////Ellipt R3B
-				rhs_EllR3B d(q, ecc);
+				rhs_EllR3B d(q, ecc, nu);
 				//};
-					
+
 				fop_global = 0;
 				//NOE INTEGRATE EQNS
 				//Odeint<StepperDopr5<rhs_R3B> > ode(ystart, x1, x2, atol, rtol, h1, hmin, ouut, d);
@@ -303,9 +308,9 @@ int main(){
 					VVv[k]=sqrt(ouut.ysave[3][k]*ouut.ysave[3][k] + ouut.ysave[4][k]*ouut.ysave[4][k]);
 					//CJ[k]=2.*((a-u2)/rr1[k] + u2/rr2[k]) + 1./a/a/a * (ouut.ysave[0][k]*ouut.ysave[0][k] + ouut.ysave[1][k]*ouut.ysave[1][k]) - VVv[k]*VVv[k];
 					CJ[k] = eCJ( ouut.xsave[k], u2, ecc, ouut.ysave[0][k], ouut.ysave[1][k], rr1[k], rr2[k], VVv[k] );
-					
+					// 0-x, 1-y, 2-z;  3-vx, 4-vy, 5-vz
 					cout.precision(20);
-					cout << ouut.xsave[k] << " " << ouut.ysave[0][k] << " " << ouut.ysave[1][k] << " " << CJ[k] <<endl;
+					cout << ouut.xsave[k] << " " << ouut.ysave[0][k] << " " << ouut.ysave[1][k] << " " << ouut.ysave[3][k] << " " << ouut.ysave[4][k] << " " <<CJ[k] <<endl;
 				}
 				
 

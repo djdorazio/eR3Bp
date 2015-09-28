@@ -47,13 +47,14 @@ else:
 	ecc     =  genfromtxt(fname, usecols=[0])[2] 
 	np      = int( genfromtxt(fname, usecols=[0])[3] )
 	DskSz   =  genfromtxt(fname, usecols=[0])[4]
+	nout    =  genfromtxt(fname, usecols=[0])[5]
 	NP      = int(np*np)
 	BAD     = int( genfromtxt(fname, usecols=[0])[NP+Nstp] )
 
-	tt    = genfromtxt(fname, usecols=[0], skip_header=5, skip_footer=1)
-	xx    = genfromtxt(fname, usecols=[1], skip_header=5, skip_footer=1)
-	yy    = genfromtxt(fname, usecols=[2], skip_header=5, skip_footer=1)
-	CCJ   = genfromtxt(fname, usecols=[3], skip_header=5, skip_footer=1)
+	tt    = genfromtxt(fname, usecols=[0], skip_header=6, skip_footer=1)
+	xx    = genfromtxt(fname, usecols=[1], skip_header=6, skip_footer=1)
+	yy    = genfromtxt(fname, usecols=[2], skip_header=6, skip_footer=1)
+	CCJ   = genfromtxt(fname, usecols=[3], skip_header=6, skip_footer=1)
 
 
 
@@ -496,16 +497,16 @@ if (Panel == 1):
 	plt.figure(figsize=[4.5,4])
 	plt.title("$q=%g$  $e=%g$  $t = %g t_{orb}$" %(q, ecc, norbfmt1))
 	for i in range(0,len(reds)):
-		plt.scatter(x[Nstp-1][reds[i]], y[Nstp-1][reds[i]], s=1, color='red')#, marker=',')
+		plt.scatter(x[Nstp-1][reds[i]], y[Nstp-1][reds[i]], s=2, color='red')#, marker=',')
 	for i in range(0,len(blues)):
-		plt.scatter(x[Nstp-1][blues[i]], y[Nstp-1][blues[i]], s=1, color='blue')#, marker=',')
+		plt.scatter(x[Nstp-1][blues[i]], y[Nstp-1][blues[i]], s=2, color='blue')#, marker=',')
 	for i in range(0,len(blacks)):
-		plt.scatter(x[Nstp-1][blacks[i]], y[Nstp-1][blacks[i]], s=1, color='black')
+		plt.scatter(x[Nstp-1][blacks[i]], y[Nstp-1][blacks[i]], s=2, color='black')
 		#plt.scatter(x[Nstp-1][blacks[i]], y[Nstp-1][blacks[i]], s=1, color='DarkGreen')#, marker=',')
 	for i in range(0,len(greens)):
-		plt.scatter(x[Nstp-1][greens[i]], y[Nstp-1][greens[i]], s=1, color='LightGreen')#, marker=',')
+		plt.scatter(x[Nstp-1][greens[i]], y[Nstp-1][greens[i]], s=2, color='LightGreen')#, marker=',')
 	for i in range(0,len(oranges)):
-		plt.scatter(x[Nstp-1][oranges[i]], y[Nstp-1][oranges[i]], s=1, color='orange')#, marker=',')
+		plt.scatter(x[Nstp-1][oranges[i]], y[Nstp-1][oranges[i]], s=2, color='orange')#, marker=',')
 
 
 	plt.scatter(xbh1, ybh1, color='black', s=30)
