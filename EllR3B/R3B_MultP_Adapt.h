@@ -22,7 +22,7 @@ double eCJ( double f, double u2, double e, double xx, double yy, double rr1, dou
 
 }
 
-
+/*
 double root0( double E , double e ){ 
 	return( E  - e*sin(E) );
 }
@@ -30,7 +30,7 @@ double root0( double E , double e ){
 double root1( double E , double e ){ 
 	return( 1. - e*cos(E) );
 }
-
+*/
 
 
 struct rhs_EllR3B {
@@ -86,7 +86,8 @@ struct rhs_EllR3B {
 // Eliptical R3B
 	Doub q;
 	Doub ecc;
-	rhs_EllR3B(Doub qq, Doub ecce) : q(qq) , ecc(ecce){}
+	Doub nu;
+	rhs_EllR3B(Doub qq, Doub ecce, Doub nuu) : q(qq) , ecc(ecce), nu(nuu){}
 	void operator() (const Doub x, VecDoub_I &y, VecDoub_O &dydx){
 		double u2 = q/(1.+q);
 		double u1 = 1.0-u2;
@@ -98,6 +99,23 @@ struct rhs_EllR3B {
 		double r2 = sqrt((y[0] - u1)*(y[0] - u1) + y[1]*y[1]);
 		double dUdx1 = n*n*y[0] - (u2*(y[0] - u1))/(r2*r2*r2) - (u1*(u2 + y[0]))/(r1*r1*r1);
 		double dUdx2 = n*n*y[1] - (u2*y[1])/(r2*r2*r2) - (u1*y[1])/(r1*r1*r1);
+
+		//Viscosity
+		double rr  = sqrt(y[0]*y[0] + y[1]*y[1]);
+		double OmK = pow(rr,-1.5);
+		double rho = 1.0;
+		//double nu = 0.00025;
+		//double Fvisc_phi = -9./4.*rho*nu*(OmK - n)/(rr);
+		
+		double FK = -9./4.*rho*nu;
+		//double Fvisc_xi = -Fvisc_phi/rr * (y[0]*sin(x) + y[1]*cos(x));
+		//double Fvisc_et = Fvisc_phi/rr *  (y[0]*cos(x) - y[1]*sin(x));
+		
+		double FvscRx = FK/(rr*rr)*(y[3] - n*y[1]);
+		double FvscRy = FK/(rr*rr)*(y[4] + n*y[0]);
+		
+		//double FvscRx = -Fvisc_phi*y[1]/rr;  //Fvisc_xi *cos(x) + Fvisc_et *sin(x);
+		//double FvscRy = Fvisc_phi*y[0]/rr;   //Fvisc_et *cos(x) - Fvisc_xi *sin(x);
 		
 		/*
 		// Solve for true anamoly
@@ -126,8 +144,8 @@ struct rhs_EllR3B {
 		double rsep = 1./(1. + ecc*cos(x));
 		
 		
-		double a1 = dUdx1*rsep + 2.*n*y[4];
-		double a2 = dUdx2*rsep - 2.*n*y[3];
+		double a1 = dUdx1*rsep + 2.*n*y[4] + FvscRx;;
+		double a2 = dUdx2*rsep - 2.*n*y[3] + FvscRy;;
 		double a3 = 0.0; ///work in the binary plane
 		//acc.setAll(a1,a2,a3);
 		
