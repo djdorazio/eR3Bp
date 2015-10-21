@@ -149,6 +149,7 @@ void Odeint<Stepper>::integrate() {
 		if (abs(s.hnext) <= hmin) {
 			x=x2;
 			nstp = MAXSTP;
+			// fop_global is just a switch, it starts as 0 and stays 0 as logn as nothing goes wrong
 			if (fop_global == 0){
 				BAD_global += 1;
 				fop_global = 1;

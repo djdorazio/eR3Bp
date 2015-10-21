@@ -18,19 +18,19 @@
 
 int main(){
 	// Choose Velocity Profile
-	Int Vprof = 5; // 1 = Om, 2 = AddV, 3= Under Constr (to be consistent AddV with vr and vphi)
+	Int Vprof = 4; // 1 = Om, 2 = AddV, 3= Under Constr (to be consistent AddV with vr and vphi)
 	Int RandSeed = 1; //randomly seed ICs in a disk or annulus if 1, else uniform square grid
 	cout << Vprof << endl;
-	const Int NUM_P=8;
-	double DskSze = 2.0;
+	const Int NUM_P=100;
+	double DskSze = 2.5;
 	double DskMin = 0.0;
 	
-	const Int Norb = 64;
+	const Int Norb = 1;
 	const Int nvar=6;  // x, y, z, vx, vy, vz
-	const Int nout=64*Norb; //number of outputs if NUM_P=1 else output ICs and final step reset nout below
+	const Int nout=1;//32*Norb; //number of outputs if NUM_P=1 else output ICs and final step reset nout below - =1 means only records first and final step
 	
 
-	const Doub q = 0.0001;   //mass ratio
+	const Doub q = 0.1;   //mass ratio
 	const Doub ecc = 0.0;  //eccentricity
 	const Doub nu  = 0.0;   // coef of kin visc
 	
@@ -283,7 +283,7 @@ int main(){
 				
 
 				
-				Output ouut(nout);    //ouput only the intial and final values (1 output)
+				Output ouut(nout);    //ouput length nout long
 				
 				//// Circ R3B
 				//if (ecc = 0.0){

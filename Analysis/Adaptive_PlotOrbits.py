@@ -13,8 +13,9 @@ from math import pi as M_PI
 
 fname1 = sys.argv[1]
 Nstp = int(sys.argv[2])
-#fname = "../dat/" + fname1
-fname = "../EllR3B/" + fname1
+#fname = "../dat/" + fname1  #OLDin pry 1 then!
+fname = "../EllR3B/" + fname1 #OLDin pry 0 then
+OLDin = 0  ## =1 uses old input style
   
 
 Panel = 1    #1 Plot individual panels, 2 plot both begin and end together 3 plot all ouputs for movie
@@ -23,9 +24,9 @@ PlotCJ = False
 stf = False
 
 
-OLDin = 1  ## =1 uses old input style
 
-Colors = 2   #0 is old style red blue black green, 1 is red in blue out and inner part split between orange and green 
+
+Colors = 0   #0 is old style red blue black green, 1 is red in blue out and inner part split between orange and green 
 #2 is all black
 
 ###Load in t and x,y positions
@@ -320,7 +321,7 @@ else:
 		
 
 
-	yL3 = 0.0
+yL3 = 0.0
 
 
 ## CALCUALTE 2x the rotating frame potential to compare to Jacobi Constants
@@ -508,11 +509,11 @@ if (Panel == 1 and PlotICs):
 
 	plt.scatter(xbh1, ybh1, color='black', s=40)
 	plt.scatter(xbh2, ybh2, color='blue', s=40)
-	plt.scatter(xL3, yL3, color='black', marker='d', s=40)
-	plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
-	plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
-	plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
-	plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
+	plt.scatter(xL3, yL3, color='black', marker='o', s=30)
+	plt.scatter(xL1, 0.0, color='black', marker='o', s=30)
+	plt.scatter(xL2, 0.0, color='black', marker='o', s=30)
+	plt.scatter(xL45[1], yL4[1], color='black', marker='o', s=30)
+	plt.scatter(xL45[1], yL5[1], color='black', marker='o', s=30)
 	
 
 
@@ -552,11 +553,11 @@ if (Panel == 1):
 
 	plt.scatter(xbh1, ybh1, color='black', s=40)
 	plt.scatter(xbh2, ybh2, color='blue', s=40)
-	plt.scatter(xL3, yL3, color='black', marker='d', s=40)
-	plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
-	plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
-	plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
-	plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
+	plt.scatter(xL3, yL3, color='black', marker='x', s=30)
+	plt.scatter(xL1, 0.0, color='black', marker='x', s=30)
+	plt.scatter(xL2, 0.0, color='black', marker='x', s=30)
+	plt.scatter(xL45[1], yL4[1], color='black', marker='x', s=30)
+	plt.scatter(xL45[1], yL5[1], color='black', marker='x', s=30)
 
 
 	
@@ -604,11 +605,12 @@ if (Panel == 2):
 
 	plt.scatter(xbh1, ybh1, color='black', s=40)
 	plt.scatter(xbh2, ybh2, color='blue', s=40)
-	plt.scatter(xL3, yL3, color='black', marker='d', s=40)
-	plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
-	plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
-	plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
-	plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
+	plt.scatter(xL3, yL3, color='black', marker='o', s=30)
+	plt.scatter(xL1, 0.0, color='black', marker='o', s=30)
+	plt.scatter(xL2, 0.0, color='black', marker='o', s=30)
+	plt.scatter(xL45[1], yL4[1], color='black', marker='o', s=30)
+	plt.scatter(xL45[1], yL5[1], color='black', marker='o', s=30)
+
 	xlim(-(DskSz+2.),DskSz+2.)
 	ylim(-(DskSz+2.),DskSz+2.)
 	xlabel("$x/a$")
@@ -656,14 +658,14 @@ if (Panel == 3):
 	if (ecc==0.0):
 		plt.scatter(xbh1, ybh1, color='black', s=40)
 		plt.scatter(xbh2, ybh2, color='blue', s=40)
-		plt.scatter(xL3, yL3, color='black', marker='d', s=40)
-		plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
-		plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
-		plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
-		plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
+		plt.scatter(xL3, yL3, color='black', marker='o', s=30)
+		plt.scatter(xL1, 0.0, color='black', marker='o', s=30)
+		plt.scatter(xL2, 0.0, color='black', marker='o', s=30)
+		plt.scatter(xL45[1], yL4[1], color='black', marker='o', s=30)
+		plt.scatter(xL45[1], yL5[1], color='black', marker='o', s=30)
 	else:
-		plt.scatter(xL45[ii], yL4[ii], color='black', marker='x', s=20)
-		plt.scatter(xL45[ii], yL5[ii], color='black', marker='x', s=20)
+		plt.scatter(xL45[ii], yL4[ii], color='black', marker='o', s=30)
+		plt.scatter(xL45[ii], yL5[ii], color='black', marker='o', s=30)
 		plt.scatter(xbh1, ybh1, color='black', s=40)
 		plt.scatter(xbh2, ybh2, color='black', s=40)
 	
