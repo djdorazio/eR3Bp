@@ -20,10 +20,10 @@ fname = "../EllR3B/" + fname1
 Panel = 1    #1 Plot individual panels, 2 plot both begin and end together 3 plot all ouputs for movie
 PlotICs = False
 PlotCJ = False
-stf = True
+stf = False
 
 
-OLDin = 1
+OLDin = 1  ## =1 uses old input style
 
 Colors = 2   #0 is old style red blue black green, 1 is red in blue out and inner part split between orange and green 
 #2 is all black
@@ -204,43 +204,123 @@ for i in range(Nstp):
 
 
 
-L4x = 0.5 - u2
-L4y = 0.866
+xL4 = 0.5 - u2
+yL4 = 0.866
 
-L5x = 0.5 - u2
-L5y = -0.866
+xL5 = 0.5 - u2
+yL5 = -0.866
 
 if (q == 0.0001):
-	L3x = -0.99998334666296
+	CJcrit = 3.00886
+	xL1 = 0.968066265559007
+	xL2 = 1.032424106260663
+	xL3 = -1.000041662500362
+
 elif (q == 0.001):
-	L3x = -0.99983466296990
+	CJcrit = 3.03859
+	xL1 = 0.93130998854097
+	xL2 = 1.069892950509135
+	xL3 = -1.000416250362032
+
+elif (q == 0.003):
+	CJcrit = 3.12563
+	xL1 = 0.90047572690107
+	xL2 = 1.1001879704990
+	xL3 = -1.00124625975948
+
+elif (q == 0.005):
+	CJcrit = 3.13882
+	xL1 = 0.88137460788153
+	xL2 = 1.11800131532167
+	xL3 = -1.00207296177854
+
 elif (q == 0.01):
-	L3x = -0.99846303815096
-		
+	CJcrit = 3.15345
+	xL1 = 0.84862409671786
+	xL2 = 1.14631969632798
+	xL3 = -1.00412535948298
+	
 elif (q == 0.02):
-	L3x = -0.997171559824834
+	CJcrit = 3.22338
+	xL1 = 0.80494927823374
+	xL2 = 1.17907038068448
+	xL3 = -1.0081695201686
+
+elif (q == 0.025):
+	CJcrit = 3.25037894484595
+	xL1 = 0.787774496082009
+	xL2 = 1.19031198121494
+	xL3 = -1.01016180163100
+
 elif (q == 0.03):
-	L3x = -0.99610593446169
+	CJcrit = 3.27402
+	xL1 = 0.772352667209511
+	xL2 = 1.19962909692046
+	xL3 = -1.01213455612159
+
 elif (q == 0.04):
-	L3x = -0.9952481007699
+	CJcrit = 3.31393
+	Xl1 = 0.745098076338014
+	xL2 = 1.21435725389812
+	xL3 = -1.01602247746864
+
 elif (q == 0.05):
-	L3x = -0.99458143891349
+	CJcrit = 3.34669
+	xL1 = 0.721126368324148
+	xL2 = 1.22557033485370
+	xL3 = -1.01983523256860
+
 elif (q == 0.06):
-	L3x = -0.994091	
+	CJcrit = 3.37426
+	xL1 = 0.699433317767269
+	xL2 = 1.23440735170966
+	xL3 = -1.02357471011260
+
+elif (q == 0.075):
+	CJcrit = 3.40837162649910
+	xL1 = 0.669969945141183
+	xL2 = 1.24457174166952
+	xL3 = -1.02905052116936
+
 elif (q == 0.08):
-	L3x = -0.993581	
+	CJcrit = 3.4182
+	xL1 = 0.660795747894620
+	xL2 = 1.24733364363021
+	xL3 = -1.03084110108191
 		
 elif (q == 0.1):
-	L3x = -0.99362077904116
-elif (q == 0.3):
-	L3x = -1.0104839515739
-elif (q == 1.0):
-	L3x = -1.0929866060128	
-else:
-	print "Unknown L3(q)"
-	L3x = 0.0
+	CJcrit = 3.45154
+	xL1 = 0.626603496205417
+	xL2 = 1.25608290849361
+	xL3 = -1.03783564208400
 
-L3y =0.0
+elif (q == 0.3):
+	CJcrit = 3.55966
+	xL1 = 0.390097485958848
+	xL2 = 1.26840220532166
+	xL3 = -1.09537841243165
+
+elif (q == 0.5):
+	CJcrit = 3.54745813555200
+	xL1 = 0.237418238185193
+	xL2 = 1.24904738888032
+	xL3 = -1.13636129399168
+
+elif (q == 1.0):
+	CJcrit = 3.4568
+	xL1 = 0.0
+	xL2 = 1.1984061445549
+	xL3 = -1.1984061445549
+
+else:
+	xL2 = 0.0
+	xL3 = 0.0
+	print "Unknown xL2"
+	print "Unknown L3(q)"
+		
+
+
+	yL3 = 0.0
 
 
 ## CALCUALTE 2x the rotating frame potential to compare to Jacobi Constants
@@ -277,48 +357,7 @@ TU = (x[0]*x[0] + y[0]*y[0]) + 2.*(u1/r1[0] + u2/r2[0])
 TUmV2 = TU - V*V
 
 
-if (q == 0.0001):
-	CJcrit = 3.00886
-	xL2 = 1.03242
-elif (q == 0.001):
-	CJcrit = 3.03859
-	xL2 = 1.06989
-elif (q == 0.01):
-	CJcrit = 3.15345
-	xL2 = 1.14632
-	
-elif (q == 0.02):
-	CJcrit = 3.22338
-	xL2 = 1.17907
-elif (q == 0.03):
-	CJcrit = 3.27402
-	xL2 = 1.19963
-elif (q == 0.04):
-	CJcrit = 3.31393
-	xL2 = 1.21436
-elif (q == 0.05):
-	CJcrit = 3.34669
-	xL2 = 1.22557
-elif (q == 0.06):
-	CJcrit = 3.37426
-	xL2 = 1.23441
-elif (q == 0.08):
-	CJcrit = 3.4182
-	xL2 = 1.24733
-		
-elif (q == 0.1):
-	CJcrit = 3.45154
-	xL2 = 1.25608
-elif (q == 0.3):
-	CJcrit = 3.55966
-	xL2 = 1.2684
-elif (q == 1.0):
-	CJcrit = 3.4568
-	xL2 = 1.19841
-else:
-	print "Unknown q, DO NOT TRUST COLORS"
-	CJcrit = 3.2
-	xL2=1.
+
 	
 	
 print "PLOTTING"
@@ -469,12 +508,14 @@ if (Panel == 1 and PlotICs):
 
 	plt.scatter(xbh1, ybh1, color='black', s=40)
 	plt.scatter(xbh2, ybh2, color='blue', s=40)
-	plt.scatter(L3x, L3y, color='blue', marker='x', s=40)
-	#plt.scatter(L4x, L4y, color='blue', marker='x', s=40)
-	#plt.scatter(L5x, L5y, color='blue', marker='x', s=40)
-	plt.scatter(xL45[1], yL4[1], color='black', marker='x', s=20)
-	plt.scatter(xL45[1], yL5[1], color='black', marker='x', s=20)
+	plt.scatter(xL3, yL3, color='black', marker='d', s=40)
+	plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
+	plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
+	plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
+	plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
 	
+
+
 	plt.xlim(-(DskSz+2.),DskSz+2.)
 	plt.ylim(-(DskSz+2.),DskSz+2.)
 	plt.xlabel("$x/a$")
@@ -509,13 +550,13 @@ if (Panel == 1):
 		plt.scatter(x[Nstp-1][oranges[i]], y[Nstp-1][oranges[i]], s=2, color='orange')#, marker=',')
 
 
-	plt.scatter(xbh1, ybh1, color='black', s=30)
-	plt.scatter(xbh2, ybh2, color='blue', s=30)
-	plt.scatter(L3x, L3y, color='blue', marker='x', s=30)
-	#plt.scatter(L4x, L4y, color='blue', marker='x', s=30)
-	#plt.scatter(L5x, L5y, color='blue', marker='x', s=30)
-	plt.scatter(xL45[1], yL4[1], color='black', marker='x', s=20)
-	plt.scatter(xL45[1], yL5[1], color='black', marker='x', s=20)
+	plt.scatter(xbh1, ybh1, color='black', s=40)
+	plt.scatter(xbh2, ybh2, color='blue', s=40)
+	plt.scatter(xL3, yL3, color='black', marker='d', s=40)
+	plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
+	plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
+	plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
+	plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
 
 
 	
@@ -561,11 +602,13 @@ if (Panel == 2):
 
 			
 
-	scatter(xbh1, ybh1, color='black', s=40)
-	scatter(xbh2, ybh2, color='blue', s=40)
-	scatter(L3x, L3y, color='blue', marker='x', s=40)
-	scatter(L4x, L4y, color='blue', marker='x', s=40)
-	scatter(L5x, L5y, color='blue', marker='x', s=40)
+	plt.scatter(xbh1, ybh1, color='black', s=40)
+	plt.scatter(xbh2, ybh2, color='blue', s=40)
+	plt.scatter(xL3, yL3, color='black', marker='d', s=40)
+	plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
+	plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
+	plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
+	plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
 	xlim(-(DskSz+2.),DskSz+2.)
 	ylim(-(DskSz+2.),DskSz+2.)
 	xlabel("$x/a$")
@@ -613,9 +656,11 @@ if (Panel == 3):
 	if (ecc==0.0):
 		plt.scatter(xbh1, ybh1, color='black', s=40)
 		plt.scatter(xbh2, ybh2, color='blue', s=40)
-		plt.scatter(L3x, L3y, color='blue', marker='x', s=40)
-		plt.scatter(L4x, L4y, color='blue', marker='x', s=40)
-		plt.scatter(L5x, L5y, color='blue', marker='x', s=40)
+		plt.scatter(xL3, yL3, color='black', marker='d', s=40)
+		plt.scatter(xL1, 0.0, color='black', marker='d', s=40)
+		plt.scatter(xL2, 0.0, color='black', marker='d', s=40)
+		plt.scatter(xL45[1], yL4[1], color='black', marker='d', s=40)
+		plt.scatter(xL45[1], yL5[1], color='black', marker='d', s=40)
 	else:
 		plt.scatter(xL45[ii], yL4[ii], color='black', marker='x', s=20)
 		plt.scatter(xL45[ii], yL5[ii], color='black', marker='x', s=20)
